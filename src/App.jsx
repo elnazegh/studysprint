@@ -92,7 +92,11 @@ function App() {
             ))}
           </ul>
 
-          <p className="progress-note">📈 Keep going! You’re making progress.</p>
+          <p className="task-footer">
+  {tasks.length === 0
+    ? "📝 No tasks yet. Add one to get started!"
+    : "📈 Keep going! You're making progress."}
+</p>
         </section>
 
         <section className="card timer-card">
