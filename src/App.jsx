@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+ const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
   const [time, setTime] = useState(25 * 60);
   const [running, setRunning] = useState(false);
@@ -22,36 +22,47 @@ function App() {
   };
 
   const toggleTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks[index].done = !newTasks[index].done;
-    setTasks(newTasks);
+    const updatedTasks = [...tasks];
+    updatedTasks[index].done = !updatedTasks[index].done;
+    setTasks(updatedTasks);
   };
 
   const deleteTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index));
   };
 
-  const formatTime = (t) => {
-    const m = Math.floor(t / 60);
-    const s = t % 60;
-    return `${m}:${s < 10 ? "0" : ""}${s}`;
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
   return (
     <div className="app">
-      <header>
-        <h1>🎓 Study<span>Sprint</span></h1>
+      <header className="header">
+        <h1>
+          <span className="cap">🎓</span> Study<span>Sprint</span>
+        </h1>
         <p className="subtitle">
           Organize your study tasks, track progress, and stay focused.
         </p>
+        <div className="line"></div>
       </header>
 
       <main className="grid">
         <section className="card">
-          <h2>📋 Task Manager</h2>
-          <p className="progress">
-            Completed: {tasks.filter((task) => task.done).length} / {tasks.length}
-          </p>
+          <div className="section-title">
+            <div className="icon-box">📋</div>
+            <div>
+              <h2>Task Manager</h2>
+              <p>
+                Completed:{" "}
+                <span className="blue">
+                  {tasks.filter((task) => task.done).length} / {tasks.length}
+                </span>
+              </p>
+            </div>
+          </div>
 
           <div className="task-input">
             <input
@@ -63,43 +74,52 @@ function App() {
           </div>
 
           <ul>
-            {tasks.length === 0 && <p className="empty">No tasks yet!</p>}
-
             {tasks.map((task, index) => (
               <li key={index}>
-                <span
+                <button
+                  className={task.done ? "check active" : "check"}
                   onClick={() => toggleTask(index)}
-                  className={task.done ? "done" : ""}
                 >
-                  {task.text}
-                </span>
-                <button className="delete" onClick={() => deleteTask(index)}>
-                  ✕
+                  ✓
+                </button>
+
+                <span className={task.done ? "done" : ""}>{task.text}</span>
+
+                <button className="trash" onClick={() => deleteTask(index)}>
+                  🗑️
                 </button>
               </li>
             ))}
           </ul>
+
+          <p className="progress-note">📈 Keep going! You’re making progress.</p>
         </section>
 
         <section className="card timer-card">
-          <h2>⏱ Study Timer</h2>
-          <p className="small-text">Stay focused and make the most of your study time.</p>
+          <div className="section-title">
+            <div className="icon-box">⏱</div>
+            <div>
+              <h2>Study Timer</h2>
+              <p>Stay focused and make the most of your study time.</p>
+            </div>
+          </div>
 
           <div className="timer-circle">
             <h3>{formatTime(time)}</h3>
-            <p>Focus</p>
+            <p>⏱ Focus</p>
           </div>
 
-          <div>
-            <button onClick={() => setRunning(true)}>▶ Start</button>
-            <button onClick={() => setRunning(false)}>⏸ Pause</button>
+          <div className="timer-buttons">
+            <button onClick={() => setRunning(true)}>▷ Start</button>
+            <button onClick={() => setRunning(false)}>Ⅱ Pause</button>
             <button onClick={() => setTime(25 * 60)}>↻ Reset</button>
           </div>
         </section>
       </main>
 
       <footer>
-        ⭐ Stay focused, keep learning, and achieve your goals! 🚀
+        <span className="footer-icon">⭐</span>
+        Stay focused, keep learning, and achieve your goals! 🚀
       </footer>
     </div>
   );
