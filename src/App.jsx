@@ -39,8 +39,14 @@ function App() {
   return (
    <div className="app">
       <h1>StudySprint</h1>
+      <p className="subtitle">
+  Organize your study tasks, track progress, and stay focused.
+</p>
 <div className="card">
       <h2>Task Manager</h2>
+      <p>
+  Completed: {tasks.filter((task) => task.done).length} / {tasks.length}
+</p>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
