@@ -255,3 +255,25 @@ footer {
   align-self: flex-start;
   text-align: left;
 }
+
+.date-picker {
+  flex: 0 0 auto;
+  width: 145px;
+  padding: 15px 10px;
+  background: #081a33;
+  border: 1px solid #244c7d;
+  border-radius: 9px;
+  color: white;
+  font-size: 14px;
+  color-scheme: dark;   /* makes the native calendar popup dark */
+}
+
+.due-date {
+  white-space: nowrap;
+  font-size: 13px;
+  color: #38bdf8;
+  background: rgba(30, 136, 255, 0.12);
+  border: 1px solid #1e4f8f;
+  border-radius: 6px;
+  padding: 3px 8px;
+}

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
- const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState("");
+  const [dateInput, setDateInput] = useState("");
   const [time, setTime] = useState(25 * 60);
   const [running, setRunning] = useState(false);
 
@@ -17,8 +18,9 @@ function App() {
 
   const addTask = () => {
     if (input.trim() === "") return;
-    setTasks([...tasks, { text: input, done: false }]);
+    setTasks([...tasks, { text: input, done: false, dueDate: dateInput }]);
     setInput("");
+    setDateInput("");
   };
 
   const toggleTask = (index) => {
@@ -35,6 +37,12 @@ function App() {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return null;
+    const [year, month, day] = dateStr.split("-");
+    return `${month}/${day}/${year}`;
   };
 
   return (
@@ -70,33 +78,40 @@ function App() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Enter task"
             />
+            <input
+              type="date"
+              className="date-picker"
+              value={dateInput}
+              onChange={(e) => setDateInput(e.target.value)}
+            />
             <button onClick={addTask}>Add</button>
           </div>
 
           <ul>
             {tasks.map((task, index) => (
               <li key={index}>
+                <button className="trash" onClick={() => deleteTask(index)}>
+                  🗑️
+                </button>
                 <button
                   className={task.done ? "check active" : "check"}
                   onClick={() => toggleTask(index)}
                 >
                   ✓
                 </button>
-
                 <span className={task.done ? "done" : ""}>{task.text}</span>
-
-                <button className="trash" onClick={() => deleteTask(index)}>
-                  🗑️
-                </button>
+                {task.dueDate && (
+                  <span className="due-date">📅 {formatDate(task.dueDate)}</span>
+                )}
               </li>
             ))}
           </ul>
 
           <p className="task-footer">
-  {tasks.length === 0
-    ? "📝 No tasks yet. Add one to get started!"
-    : "📈 Keep going! You're making progress."}
-</p>
+            {tasks.length === 0
+              ? "📝 No tasks yet. Add one to get started!"
+              : "📈 Keep going! You're making progress."}
+          </p>
         </section>
 
         <section className="card timer-card">
@@ -107,16 +122,14 @@ function App() {
               <p>Stay focused and make the most of your study time.</p>
             </div>
           </div>
-
           <div className="timer-circle">
             <h3>{formatTime(time)}</h3>
             <p>⏱ Focus</p>
           </div>
-
           <div className="timer-buttons">
             <button onClick={() => setRunning(true)}>▷ Start</button>
             <button onClick={() => setRunning(false)}>Ⅱ Pause</button>
-            <button onClick={() => setTime(25 * 60)}>↻ Reset</button>
+            <button onClick={() => { setTime(25 * 60); setRunning(false); }}>↻ Reset</button>
           </div>
         </section>
       </main>
